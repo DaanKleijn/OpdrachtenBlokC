@@ -1,39 +1,90 @@
 import random
 
-kleuren = "rgbop"
-vragenlst = []
-wachtWoordlst = []
 
 
-def inputUser():
-    global vraag
-    vraag = input("Voer een code van 2 in: ")
-    vraag.lower()
-    vragenlst.append(vraag)
+def wachtWoordMaken():
+    global wachtWoord
+    wachtwoord = random.randrange(1000, 10000)
 
 
-def maakWachtWoord(kleuren):
-    for i in range(2):
-        wachtWoordlst.append(random.choice(kleuren))
+def guess():
+    global antwoord
+    antwoord = int(input("Geef 4 cijfers: "))
 
 
-def checkAntwoord():
-    antwoordlst = []
-    x = 0
-    inputUser()
-    maakWachtWoord(kleuren)
-    print(wachtWoordlst, vragenlst)
-    while True:
-        if x == 2:
-            return antwoordlst
-        elif vragenlst[x] == wachtWoordlst[x]:
-            antwoordlst.append("2")
-            x += 1
-        elif vragenlst[x] in wachtWoordlst[x]:
-            antwoordlst.append("1")
-            x += 1
-        else:
-            antwoordlst.append("0")
-            x += 1
+def spel():
+    global wachtWoord
+    global antwoord
+    wachtWoordMaken()
+    guess()
+    if wachtWoord == antwoord:
+        return f"Gefeliciteerd je hebt het in 1x geraden!"
 
-print(checkAntwoord())
+import random
+
+# the .randrange() function generates a
+# random number within the specified range.
+num = random.randrange(1000, 10000)
+
+n = int(input("Guess the 4 digit number:"))
+
+# condition to test equality of the
+# guess made. Program terminates if true.
+if (n == num):
+    print("Great! You guessed the number in just 1 try! You're a Mastermind!")
+else:
+    # ctr variable initialized. It will keep count of
+    # the number of tries the Player takes to guess the number.
+    ctr = 0
+
+    # while loop repeats as long as the
+    # Player fails to guess the number correctly.
+    while (n != num):
+        # variable increments every time the loop
+        # is executed, giving an idea of how many
+        # guesses were made.
+        ctr += 1
+
+        count = 0
+
+        # explicit type conversion of an integer to
+        # a string in order to ease extraction of digits
+        n = str(n)
+
+        # explicit type conversion of a string to an integer
+        num = str(num)
+
+        # correct[] list stores digits which are correct
+        correct = ['X'] * 4
+
+        # for loop runs 4 times since the number has 4 digits.
+        for i in range(0, 4):
+
+            # checking for equality of digits
+            if (n[i] == num[i]):
+                # number of digits guessed correctly increments
+                count += 1
+                # hence, the digit is stored in correct[].
+                correct[i] = n[i]
+            else:
+                continue
+
+        # when not all the digits are guessed correctly.
+        if (count < 4) and (count != 0):
+            print("Not quite the number. But you did get ", count, " digit(s) correct!")
+            print("Also these numbers in your input were correct.")
+            for k in correct:
+                print(k, end=' ')
+            print('\n')
+            print('\n')
+            n = int(input("Enter your next choice of numbers: "))
+
+        # when none of the digits are guessed correctly.
+        elif (count == 0):
+            print("None of the numbers in your input match.")
+            n = int(input("Enter your next choice of numbers: "))
+
+    # condition for equality.
+    if n == num:
+        print("You've become a Mastermind!")
+        print("It took you only", ctr, "tries.")
