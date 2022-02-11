@@ -3,7 +3,7 @@ import random
 
 def wachtWoordMaken():
     global wachtWoord
-    wachtwoord = random.randrange(1000, 10000)
+    wachtWoord = random.randrange(1000, 10000)
 
 
 def guess():
@@ -22,32 +22,42 @@ def spel():
         tries = 0
         while (antwoord != wachtWoord):
             tries += 1
-            guesses = 0
+            correct = 0
             antwoord = str(antwoord)
             wachtWoord = str(wachtWoord)
-            correctAnswer = ("W") * 4
-            for i in range(4):
-                if (antwoord[i] == wachtWoord[i]):
-                    tries += 1
+            correctlst = []
 
-                    correctAnswer[i] = antwoord[i]
+            for i in range(0, 4):
+                correctlst.append("x")
+                if (antwoord[i] == wachtWoord[i]):
+                    correct += 1
+                    correctlst.pop(i)
+                    correctlst.append("w")
+
                 else:
                     continue
 
-            if (tries < 4) and (tries != 0):
-                print("Not quite the number. But you did get ", tries, " digit(s) correct!")
+            if (correct < 4) and (correct != 0):
+                print("Not quite the number. But you did get ", correct, " digit(s) correct!")
                 print("Also these numbers in your input were correct.")
-                for k in correctAnswer:
-                    print(k, end= '')
-                print("\n")
-                print("\n")
-                antwoord = guess()
 
-            elif (tries == 0):
-                   antwoord = guess()
+                for k in correctlst:
+                    print(k, end=' ')
+
+                print('\n')
+                print('\n')
+                antwoord = int(guess())
+
+            elif (correct == 0):
+                print("None of the numbers in your input match.")
+                antwoord = int(guess())
+
+            elif tries == 10:
+                return f"Geen zetten over"
 
         if antwoord == wachtWoord:
-            return f"Gefeliciteerd!"
+            print("You've become a Mastermind!")
+            print("It took you only", tries, "tries.")
 
 
 print(spel())
