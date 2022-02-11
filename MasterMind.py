@@ -1,63 +1,70 @@
 import random
 
 
-def wachtWoordMaken():
-    global wachtWoord
-    wachtWoord = random.randrange(1000, 10000)
+def makePassWord():
+    colors = "blue", "yellow", "red", "purple", "orange", "green"
+    global passWord
+    passWord = []
+    for i in range (4):
+        passWordInput = random.choice(colors)
+        passWord.append(passWordInput)
+    print(passWord)
 
 
 def guess():
-    global antwoord
-    antwoord = int(input("Geef 4 cijfers: "))
+    global answer
+    answer = input("Guess 4 colors: ")
 
 
-def spel():
-    global wachtWoord
-    global antwoord
-    wachtWoordMaken()
+
+def game():
+    global passWord
+    global answer
+    makePassWord()
     guess()
-    if antwoord == wachtWoord:
-        return f"Gefeliciteerd je hebt het in 1x geraden!"
+    if answer == passWord:
+        return f"Congratulations you've guessed the code in one try!"
     else:
         tries = 0
-        while (antwoord != wachtWoord):
+        while (answer != passWord):
             tries += 1
             correct = 0
-            antwoord = str(antwoord)
-            wachtWoord = str(wachtWoord)
+            answer = str(answer)
+            passWord= str(passWord)
             correctlst = []
+            rightPlace = "w"
+            rightButWrong = "z"
 
-            for i in range(0, 4):
+            for i in range(4):
                 correctlst.append("x")
-                if (antwoord[i] == wachtWoord[i]):
+                if (answer[i] == passWord[i]):
                     correct += 1
-                    correctlst.pop(i)
-                    correctlst.append("w")
+                    correctlst.pop()
+                    correctlst.append(rightPlace)
+                    print(correctlst)
 
                 else:
                     continue
 
             if (correct < 4) and (correct != 0):
-                print("Not quite the number. But you did get ", correct, " digit(s) correct!")
-                print("Also these numbers in your input were correct.")
+                print("You got ", correct, " color(s) correct!")
+                print("Also these colors in your input were correct.")
 
                 for k in correctlst:
                     print(k, end=' ')
-
                 print('\n')
-                print('\n')
-                antwoord = int(guess())
+                answer = guess()
 
             elif (correct == 0):
-                print("None of the numbers in your input match.")
-                antwoord = int(guess())
+                print("None of the colors in your input match.")
+                answer = guess()
 
             elif tries == 10:
-                return f"Geen zetten over"
+                return f"No turns left"
 
-        if antwoord == wachtWoord:
+        if answer == passWord:
             print("You've become a Mastermind!")
             print("It took you only", tries, "tries.")
 
 
-print(spel())
+print(game())
