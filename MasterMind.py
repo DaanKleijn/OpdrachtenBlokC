@@ -1,27 +1,27 @@
 import random
 
 
-def makePassWord():
+def makepassword():
     colors = "blue", "yellow", "red", "purple", "orange", "green"
 
     passWord = []
-    for i in range (4):
+    for i in range(4):
         passWordInput = random.choice(colors)
         passWord.append(passWordInput)
-    print(passWord)
     return passWord
 
 
 def guess():
-    answer = input("Guess 4 colors: ")
-    return answer
+    answerlst = []
+    for i in range(4):
+        answerInput = input("Guess 4 colors: ")
+        answerlst.append(answerInput)
+    return answerlst
 
 
 def game():
-    passWord = makePassWord()
+    passWord = makepassword()
     answer = guess()
-    print(passWord)
-    print(answer)
 
     if answer == passWord:
         return f"Congratulations you've guessed the code in one try!"
@@ -36,11 +36,10 @@ def game():
 
             for i in range(4):
                 correctlst.append("x")
-                print(answer[i])
                 if (answer[i] == passWord[i]):
+                    correctlst.pop(correct)
+                    correctlst.append(rightPlace[correct])
                     correct += 1
-                    correctlst.pop()
-                    correctlst.append(rightPlace)
 
                 else:
                     continue
@@ -48,7 +47,9 @@ def game():
             for i in range(10):
                 if (correct < 4) and (correct != 0):
                     print("You got ", correct, " color(s) correct!")
-                    print("Also these colors in your input were correct.")
+                    correctlst.pop(correct)
+                    correctlst.append(rightButWrong[correct])
+                    correct += 1
 
                     for k in correctlst:
                         print(k, end=' ')
