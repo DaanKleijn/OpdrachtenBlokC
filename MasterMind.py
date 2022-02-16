@@ -3,6 +3,7 @@ import random
 
 def makepassword():
     colors = "blue", "yellow", "red", "purple", "orange", "green"
+
     passWord = []
     for i in range(4):
         passWordInput = random.choice(colors)
@@ -13,13 +14,11 @@ def makepassword():
 
 def guess():
     answerlst = []
+    nums = 1
     for i in range(4):
-        answerInput = input("Guess 4 colors: ")
-        if len(answerInput) > 6:
-            print("Please only give one color")
-            return guess()
-        else:
-            answerlst.append(answerInput)
+        answerInput = input("Guess color " + str(nums) + ": ")
+        answerlst.append(answerInput)
+        nums += 1
     return answerlst
 
 
@@ -28,50 +27,31 @@ def game():
     answer = guess()
 
     if answer == passWord:
-        return f"Congratulations you've guessed the code in one try!"
+        return f"Congratulations you've guessed the code in one try!!"
     else:
-        tries = 0
-        while (answer != passWord):
-            tries += 1
-            correct = 0
-            correctlst = []
-            rightPlace = "w"
-            rightButWrong = "z"
+        while answer != passWord:
+            answerlst = []
+            indexcount = 0
+            tries = 0
+            rightPlace = "z"
+            rightButWrong = "w"
+            wrong = "x"
 
-            for i in range(4):
-                correctlst.append("x")
-                if (answer[i] == passWord[i]):
-                    correctlst.pop(i)
-                    correctlst.append(rightPlace)
-                    correct += 1
-                    tries += 1
-
-                else:
-                    continue
-
-            for i in range(10):
-                if (correct < 4) and (correct != 0):
-                    print("You got ", correct, " color(s) correct!")
-                    correctlst.pop(correct)
-                    correctlst.append(rightButWrong)
-                    correct += 1
-                    tries += 1
-
-                    for k in correctlst:
-                        print(k, end=' ')
-                    print('\n')
-                    answer = guess()
-
-                elif (correct == 0):
-                    print("None of the colors in your input match.")
-                    answer = guess()
-
-                elif tries == 10:
-                    return f"No turns left"
-
+            if answer[indexcount] == passWord[indexcount]:
+                answerlst.append(rightPlace)
+                indexcount += 1
+            elif answer[indexcount] in passWord[indexcount]:
+                answerlst.append(rightButWrong)
+                indexcount += 1
+            else:
+                print("Your score is: ")
+                print(answerlst)
+                answerlst.append(wrong)
+                indexcount += 1
+                answer = guess()
             if answer == passWord:
-                print("You've become a Mastermind!")
-                print("It took you only", tries, "tries.")
+                return f"Congratulations you've cracked the code!" \
+                       f"It only took {tries} tries"
 
 
 print(game())
