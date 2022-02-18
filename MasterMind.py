@@ -22,6 +22,18 @@ def guess():
     return answerlst
 
 
+def whatUser():
+    userInput = input("Would you like to play mastermind against a computer? y or n ")
+    if "y" in userInput:
+        userInput = input("Would you like to play as guesser or make the code? guess or code ")
+        if "guess" in userInput:
+            game()
+        else:
+            computerGuess()
+    else:
+        return f"Allrighty then."
+
+
 def game():
     passWord = makepassword()
     answer = guess()
@@ -57,7 +69,30 @@ def game():
                 answer = guess()
 
         if answer == passWord:
-            return "You've become a Mastermind! It took you only", tries, "tries."
+            return "You've cracked the code! It took you only", tries, "tries."
+
+def computerGuess():
+    colors = "blue", "yellow", "red", "purple", "orange", "green"
+    passwordlst = []
+    computerAnswer = []
+    nums = 1
+    tries = 0
+    print(colors)
+    while len(passwordlst) != 4:
+        passWord = input("What will be color " + str(nums) + "? ")
+        if passWord in colors:
+            passwordlst.append(passWord)
+            nums += 1
+
+    while computerAnswer != passwordlst:
+        for i in range(4):
+            computerInput = random.choice(colors)
+            computerAnswer.append(computerInput)
+        print(computerAnswer)
+        if computerAnswer != passwordlst:
+            computerAnswer.clear()
+            tries += 1
+        print(tries)
 
 
-print(game())
+print(whatUser())
