@@ -25,42 +25,39 @@ def guess():
 def game():
     passWord = makepassword()
     answer = guess()
+    score = [0, 0]
 
     if answer == passWord:
         return f"Congratulations you've guessed the code in one try!!"
     else:
         tries = 0
+        almostCorrect = 0
         while answer != passWord:
-
             tries += 1
             correct = 0
-            correctlst = ['X'] * 4
 
             for i in range(4):
-
                 if answer[i] == passWord[i]:
                     correct += 1
-                    correctlst[i] = answer[i]
+                    score[0] = correct
+
+                elif answer[i] != passWord[i]:
+                    almostCorrect += 1
 
             if correct < 4 and correct != 4:
-                print("Not quite the number. But you did get ", correct, " colors correct!")
-                print("Also these colors in your input were correct.")
-
-                right = "z"
-                rightButWrong = "w"
-                for right in correctlst:
-                    print(right, end=' ')
-                print('\n')
-                print('\n')
+                score[-1] = almostCorrect
+                print("\n")
+                print(score)
                 answer = guess()
+                score = [0, 0]
+                almostCorrect = 0
 
             elif correct == 0:
                 print("None of the numbers in your input match.")
                 answer = guess()
 
         if answer == passWord:
-            return "You've become a Mastermind!" \
-                   "It took you only", tries, "tries."
+            return "You've become a Mastermind! It took you only", tries, "tries."
 
 
 print(game())
