@@ -15,7 +15,7 @@ def whatUser():
             # # if "simple" in userInput:
             # #     computerSimpleGuess()
             # else:
-                computerRandomGuess()
+                computerSimpleGuess()
     else:
         return f"Allrighty then."
 
@@ -23,7 +23,7 @@ def whatUser():
 def makepassword():
     passWord = []
     for i in range(4):
-        passWordInput = random.randint(0, 6)
+        passWordInput = random.randint(0, 5)
         passWord.append(passWordInput)
     print(passWord)
     print(translateColors(passWord))
@@ -79,6 +79,40 @@ def game():
         if correct == 4:
             print("You've cracked the code! It took you only", tries, "tries.")
 
+#translates numbers to words
+def translateColors(passWord):
+    colors = ["blue", "yellow", "red", "purple", "orange", "green"]
+    passwordlst = []
+    for numbers in passWord:
+        passwordlst.append(colors[numbers])
+    return passwordlst
+
+#Translates words to numbers
+def translateWords(answerlst):
+    colors = ["blue", "yellow", "red", "purple", "orange", "green"]
+    wordlst = []
+    for color in answerlst:
+        wordlst.append(colors.index(color))
+    return wordlst
+
+
+def computerSimpleGuess():
+    passwordlst = []
+    computerAnswer = [3, 3, 4, 4]
+    passwordlstInput = makepassword()
+    passwordlst.append(passwordlstInput)
+    while computerAnswer != passwordlst:
+        for i in range(0, 4):
+            if computerAnswer[i] != passwordlst:
+                print(computerAnswer)
+                computerAnswer[i] += 1
+                if computerAnswer[i] == 6:
+                    print(computerAnswer)
+                    computerAnswer[i] = 0
+
+
+
+print(whatUser())
 
 # def computerSimpleGuess():
 #     colors = "blue", "yellow", "red", "purple", "orange", "green"
@@ -96,46 +130,3 @@ def game():
 #     while computerAnswer != passwordlst:
 #         computerAnswer[-1] += 1
 #         print(computerAnswer)
-
-
-#translates numbers to words
-def translateColors(passWord):
-    colors = ["blue", "yellow", "red", "purple", "orange", "green"]
-    passwordslst = []
-    for color in passWord:
-        passwordslst.append(colors[color])
-    return passwordslst
-
-#Translates words to numbers
-def translateWords(answerlst):
-    colors = ["blue", "yellow", "red", "purple", "orange", "green"]
-    wordlst = []
-    for color in answerlst:
-        wordlst.append(colors.index(color))
-    return wordlst
-
-
-def computerRandomGuess():
-
-    # passwordlst = []
-    # computerAnswer = []
-    # nums = 1
-    # tries = 0
-    # while len(passwordlst) != 4:
-    #     passWord = input("What will be color " + str(nums) + "? ")
-    #     if passWord in colors:
-    #         passwordlst.append(passWord)
-    #         nums += 1
-    #
-    # while computerAnswer != passwordlst:
-    #     for i in range(4):
-    #         computerInput = random.choice(colors)
-    #         computerAnswer.append(computerInput)
-    #     print(computerAnswer)
-    #     if computerAnswer != passwordlst:
-    #         computerAnswer.clear()
-    #         tries += 1
-    #     print(tries)
-
-
-print(whatUser())
