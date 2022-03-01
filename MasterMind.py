@@ -1,21 +1,26 @@
 import random
 import json
-with open('possibleCombinations.txt', 'r') as dataFile:
-  possibleCombinations = json.loads(dataFile.read())
+
+def getData():
+    with open('possibleCombinations.txt', 'r') as dataFile:
+        possibleCombinations = json.loads(dataFile.read())
+    return possibleCombinations
 
 
 def whatUser():
     userInput = input("Would you like to play mastermind against a computer? y or n ")
     if "y" in userInput:
         userInput = input("Would you like to play as guesser or make the code? guess or code ")
+        print("\n")
         if "guess" in userInput:
             game()
         else:
-            # userInput = ("Would you like to use the simple guess or a bit more advanced? simple or advanced ")
-            # # if "simple" in userInput:
-            # #     computerSimpleGuess()
-            # else:
-                computerSimpleGuess()
+            userInput = ("Would you like to use the simple guess or a bit more advanced? simple or advanced ")
+            if "simple" in userInput:
+                computerSimpleStrat()
+            else:
+                computerProStrat()
+
     else:
         return f"Allrighty then."
 
@@ -28,6 +33,20 @@ def makepassword():
     print(passWord)
     print(translateColors(passWord))
     return passWord
+
+
+def makeAIPassword():
+    colors = "blue", "yellow", "red", "purple", "orange", "green"
+    count = 1
+    passWord = []
+    print("These are the possible colors: " + str(colors))
+    for i in range(4):
+        answerInput = input("Guess color " + str(count) + ": ")
+        passWord.append(answerInput)
+        count += 1
+    print("Your code is:" + str(passWord))
+    wordlst = translateWords(passWord)
+    return wordlst
 
 
 def guess():
@@ -79,7 +98,8 @@ def game():
         if correct == 4:
             print("You've cracked the code! It took you only", tries, "tries.")
 
-#translates numbers to words
+
+# translates numbers to words
 def translateColors(passWord):
     colors = ["blue", "yellow", "red", "purple", "orange", "green"]
     passwordlst = []
@@ -87,7 +107,8 @@ def translateColors(passWord):
         passwordlst.append(colors[numbers])
     return passwordlst
 
-#Translates words to numbers
+
+# Translates words to numbers
 def translateWords(answerlst):
     colors = ["blue", "yellow", "red", "purple", "orange", "green"]
     wordlst = []
@@ -96,37 +117,23 @@ def translateWords(answerlst):
     return wordlst
 
 
-def computerSimpleGuess():
-    passwordlst = []
-    computerAnswer = [3, 3, 4, 4]
-    passwordlstInput = makepassword()
-    passwordlst.append(passwordlstInput)
-    while computerAnswer != passwordlst:
-        for i in range(0, 4):
-            if computerAnswer[i] != passwordlst:
-                print(computerAnswer)
-                computerAnswer[i] += 1
-                if computerAnswer[i] == 6:
-                    print(computerAnswer)
-                    computerAnswer[i] = 0
+def computerSimpleStrat():
+    password = makeAIPassword()
+    tries = 0
+    computerAnswerlst = []
+    while computerAnswerlst != password:
+        for k in range(6):
+            for l in range(6):
+                for m in range(6):
+                    for n in range(6):
+                        computerAnswerlst = [k, l, m, n]
+                        tries += 1
+                        print("try:", tries)
+                        if computerAnswerlst == password:
+                            return f"Congratulations your code: {password} took {tries} tries"
 
+
+def computerProStrat():
 
 
 print(whatUser())
-
-# def computerSimpleGuess():
-#     colors = "blue", "yellow", "red", "purple", "orange", "green"
-#     passwordlst = []
-#     computerAnswer = ["blue", "blue", "blue", "blue"]
-#     nums = 1
-#     tries = 0
-#     print(colors)
-#     while len(passwordlst) != 4:
-#         passWord = input("What will be color " + str(nums) + "? ")
-#         if passWord in colors:
-#             passwordlst.append(passWord)
-#             nums += 1
-#
-#     while computerAnswer != passwordlst:
-#         computerAnswer[-1] += 1
-#         print(computerAnswer)
