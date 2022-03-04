@@ -1,30 +1,35 @@
 import random
 import json
 
+
+# Retreaves data from txt file and returns possibleCombinations
 def getData():
     with open('possibleCombinations.txt', 'r') as dataFile:
         possibleCombinations = json.loads(dataFile.read())
     return possibleCombinations
 
 
+# Asks user what they want, play, guess or make the code, if they get code what ai they want
 def whatUser():
     userInput = input("Would you like to play mastermind against a computer? y or n ")
     if "y" in userInput:
         userInput = input("Would you like to play as guesser or make the code? guess or code ")
-        print("\n")
         if "guess" in userInput:
             game()
         else:
-            userInput = ("Would you like to use the simple guess or a bit more advanced? simple or advanced ")
+            userInput = input("Would you like to use the simple guess or a bit more advanced? simple or advanced ")
             if "simple" in userInput:
+                print("\n")
                 computerSimpleStrat()
             else:
+                print("\n")
                 computerProStrat()
 
     else:
         return f"Allrighty then."
 
 
+# Makes password in form of numbers
 def makepassword():
     passWord = []
     for i in range(4):
@@ -35,6 +40,7 @@ def makepassword():
     return passWord
 
 
+# If user choose code this makes the password
 def makeAIPassword():
     colors = "blue", "yellow", "red", "purple", "orange", "green"
     count = 1
@@ -49,6 +55,7 @@ def makeAIPassword():
     return wordlst
 
 
+# Function to register the users guess
 def guess():
     answerlst = []
     nums = 1
@@ -60,6 +67,7 @@ def guess():
     return answerlst
 
 
+# If user chooses guess this function to play the game
 def game():
     passWord = makepassword()
     answer = guess()
@@ -117,6 +125,7 @@ def translateWords(answerlst):
     return wordlst
 
 
+# Solves the code by increasing the numbers one by one
 def computerSimpleStrat():
     password = makeAIPassword()
     tries = 0
@@ -133,7 +142,59 @@ def computerSimpleStrat():
                             return f"Congratulations your code: {password} took {tries} tries"
 
 
+# Function that returns the code in 10 tries max
+# It uses the txt file to see what possible tries the computer should make.
+# This means it looks what combination gets a (1,0) and (0,0) and makes a new list with the better combinations
+# It continues that untill the code is cracked
 def computerProStrat():
+    answer = makeAIPassword()
+    possibleMoves = getData()
+    tries = 1
+    feedback = [0, 0]
+    while feedback != [4, 0] and tries < 11:
+        move = possibleMoves[0]
+        feedback = validate(move, answer)
+        print(feedback)
+        possibleMoves = updateMoves(possibleMoves, move, feedback)
+        tries += 1
+        print(tries)
+    if feedback == [4, 0]:
+        print("You've won!")
+    else:
+        print("Out of moves")
+
+
+def updateMoves(allPossibleMoves, move, feedback):
+    newAllPossibleMoves = []
+    for possibleMove in allPossibleMoves:
+        tempFeedback = validate(move=move, answer=possibleMove)
+        if feedback == tempFeedback:
+            newAllPossibleMoves.append(possibleMove)
+    return newAllPossibleMoves
+
+
+def validate(move, answer):
+    score = [0, 0]
+    restAnswer = []
+    restPassword = []
+    almostCorrect = 0
+    correct = 0
+
+    for i in range(0, 4):
+        if answer[i] == move[i]:
+            correct += 1
+            score[0] = correct
+        else:
+            restAnswer.append(answer[i])
+            restPassword.append(move[i])
+
+    for i in range(len(restAnswer)):
+        if restAnswer[i] in restPassword:
+            almostCorrect += 1
+            score[-1] = almostCorrect
+            restPassword.remove(restAnswer[i])
+    print(score)
+    return score
 
 
 print(whatUser())
