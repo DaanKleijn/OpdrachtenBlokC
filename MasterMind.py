@@ -159,7 +159,7 @@ def computerProStrat():
         tries += 1
         print(tries)
     if feedback == [4, 0]:
-        print("You've won!")
+        print("The computer guessed the code!")
     else:
         print("Out of moves")
 
