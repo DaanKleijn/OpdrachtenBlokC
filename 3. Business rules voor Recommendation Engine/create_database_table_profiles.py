@@ -46,15 +46,15 @@ def create_columns(columns):
 connection = connect.connect_db(host='localhost', database='opisop_sql', user='postgres', password='postgres')
 
 # Use the following variable to add all of your required table contents (if no optional flags are wanted, '' is expected to be used)
-columns = [
+columns_profils = [
     ['id', 'VARCHAR(32)', 'NOT NULL'],
     ['name', 'VARCHAR(256)', ''],
     ['price', 'INT', '']
 ]
-column_list = create_columns(columns)
+column_list = create_columns(columns_profils)
 
 # Alter name in case of different table name
-sql_statement = create_table(name='products', column_strings=column_list)
+sql_statement = create_table(name='profiles', column_strings=column_list)
 
 cursor = connection.cursor()
 cursor.execute(sql_statement)
